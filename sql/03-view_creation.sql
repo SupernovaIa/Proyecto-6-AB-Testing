@@ -29,6 +29,30 @@ LEFT JOIN recommendations r ON v.user_id = r.user_id AND v.content_id = r.conten
 
 
 
+query=""" 
+SELECT u.id AS id_usuario,
+user_type AS tipo_usuario,
+u.recommendation_system AS sistema_usuario,
+c.id AS id_contenido,c.duration AS duracion_contenido,
+c.content_type AS tipo_contenido,
+c.rating AS valoraciones,
+v.user_id AS numero_sesion,
+v.content_id AS recomendaciones_vistas,
+duration_viewed AS minutos_sesion,
+v.recommendation_system AS sistema_sesion,
+ui.id AS numero_interaccion,
+ui.content_id AS id_contenido_interaccion,
+ui.interaction_type AS tipo_interaccion,
+r.content_id AS recomendaciones_totales,
+v.view_date AS fecha_sesion
+
+FROM users u 
+INNER JOIN "views" v ON u.id = v.user_id 
+INNER JOIN user_interactions ui ON u.id = ui.user_id 
+INNER JOIN "content" c ON c.id = v.content_id
+INNER JOIN "recommendations" r on r."user_id" = u.id;
+
+
 /*
 views, content, and users are INNER JOINED because every record in the view must have a valid user and content. 
 A view with no associated user or content would be meaningless in this context.
